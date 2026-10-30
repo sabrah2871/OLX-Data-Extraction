@@ -54,7 +54,6 @@ class OlxspiderSpider(scrapy.Spider):
     def _initial_requests(self):
         yield self._api_request(f"{self.API_URL}?{urlencode(self.PARAMS)}")
 
-    # Scrapy >= 2.13
     async def start(self):
         for request in self._initial_requests():
             yield request
@@ -79,7 +78,6 @@ class OlxspiderSpider(scrapy.Spider):
         next_url = (payload.get("metadata") or {}).get("next_page_url")
         if next_url:
             self.page += 1
-            # yield self._api_request(response.urljoin(next_url))
             yield self._api_request(f"{self.API_URL}?{urlencode(self.PARAMS | {"page": self.page})}")
 
     def on_error(self, failure):
